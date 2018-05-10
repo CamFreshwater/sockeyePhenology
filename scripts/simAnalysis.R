@@ -1,7 +1,4 @@
-
-##################################################################
-##################################################################
-######## Migration Phenology - Simulation Sensitivity Analysis
+###### Migration Phenology - Simulation Sensitivity Analysis
 ###### Generate data with posterior estimates of fixed effects
 ###### and variance terms from fitted hierarchical models
 ###### Note: uses imported csv files of parameters listed on github 
@@ -19,8 +16,8 @@ require(rethinking); require(MASS); require(dplyr); require(gplots); require(her
 dateModPars <- read.csv(here::here("JohnstoneStrait/dateModPars.csv"), stringsAsFactors = FALSE, strip.white = TRUE, na.strings = c("NA",""))
 countModPars <- read.csv(here::here("JohnstoneStrait/countModPars.csv"), stringsAsFactors = FALSE, strip.white = TRUE, na.strings = c("NA",""))
 
-
-############ Simulation sensitivity analysis
+# ___________________________________________________________________
+# Simulation sensitivity analysis 
 
 ## Generate data
 ## Define parameters based on estimates from models
@@ -147,7 +144,7 @@ for(j in seq_along(nYrsVec)){ #loop through different year sample sizes
 }
 
 
-#### Plot results
+#### Plot results 
 est3yr <- seq(from=93, to=107, by=1) #correspond to index slots in precis object equivalent to: "a","bs", "br", "ba", "bb", "sigma"
 est9yr <- seq(from=123, to=137, by=1) #correspond to index slots in precis object equivalent to: "a","bs", "br", "ba", "bb","sigma"
 
@@ -212,11 +209,8 @@ for(i in seq_along(trueEffects)){
 }
 dev.off()
 
-###########################################################################
-###########################################################################
 
-
-
+#____________________________________________________________________
 ### Part 2 - Simulate data for count model
 a <- countModPars[countModPars$parameter=="alpha_fixed",2]
 bd <- countModPars[countModPars$parameter=="betaDate_fixed",2]
@@ -235,7 +229,7 @@ covYr <- diag(phiYrs) %*% rhoYrs %*% diag(phiYrs)
 
 
 
-### Simulate with different sample sizes -------------------------------
+### Simulate with different sample sizes 
 nFishVec <- c(10, 50, 75)
 nYrsVec <- c(3, 9)
 

@@ -10,12 +10,12 @@
 require(rethinking)
 require(here) #package supporting generic import assuming your selected wd contains file of interest
 
-phenDat <- read.csv(here::here("individualOtolithData.csv"), stringsAsFactors = FALSE, strip.white = TRUE, 
+phenDat <- read.csv(here("individualOtolithData.csv"), stringsAsFactors = FALSE, strip.white = TRUE, 
 	na.strings = c("NA",""))
 
 
-####################################################################################################
-####### DATA CLEAN #######
+#____________________________________________________________________
+## Data clean
 
 phenDat$Age <- as.factor(phenDat$age)
 
@@ -37,13 +37,12 @@ phenDat$river_t <- (phenDat$riverDist - mean(phenDat$riverDist))/sd(phenDat$rive
 d <- phenDat[,c("yr_id","cu_id","age_id","age2_id","TotalCount","EntryDate","fl_t","date_t",
 	"growth_t","river_t")]
 
-####################################################################################################
 
 
-####################################################################################################
-####### MODELS #######
+#____________________________________________________________________
+## Models
 
-### Total count model
+## Total count model
 modCount <- map2stan(
 	alist(
 		#likelihood
@@ -58,7 +57,7 @@ modCount <- map2stan(
 		BB <- bb + bb_cu[cu_id] + bb_yr[yr_id],
 		#adaptive priors
 		c(a_cu, bd_cu, bs_cu, bg_cu, ba_cu, bb_cu)[cu_id] ~ dmvnorm2(0, phi_cu, rho_cu),
-		c(a_yr, bd_yr, bs_yr, bg_yr, ba_yr, bb_yr)[yr_id] ~ dmvnorm2(0, phi_yr, Rho_yr),
+		c(a_yr, bd_yr, bs_yr, bg_yr, ba_yr, bb_yr)[yr_id] ~ dmvnorm2(0, phi_yr, rho_yr),
 		#fixed priors
 		a ~ dnorm(15,30),
 		c(bd, bg, bs) ~ dnorm(0,3),
@@ -68,7 +67,7 @@ modCount <- map2stan(
 		phi_cu ~ dcauchy(0,2),
 		phi_yr ~ dcauchy(0,2),
 		rho_cu ~ dlkjcorr(4),
-		Rho_yr ~ dlkjcorr(4)
+		rho_yr ~ dlkjcorr(4)
 		),
 	data=d, 
 	iter=9000, warmup=1000, chains=3, cores=3)
@@ -112,8 +111,3 @@ precis(modCount, depth=2)
 plot(modCount)
 precis(modDate, depth=2)
 plot(modDate)
-
-################################################################
-################################################################
-################################################################
-

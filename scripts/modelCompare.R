@@ -17,7 +17,8 @@ phenDat <- read.csv(here::here("individualOtolithData.csv"), stringsAsFactors = 
 	na.strings = c("NA",""))
 
 
-####### DATA CLEAN #######
+#____________________________________________________________________
+## Data clean
 
 phenDat$Age <- as.factor(phenDat$Age)
 
@@ -45,10 +46,9 @@ d <- phenDat[,c("FishNumber","yr_id","cu_id","age_id","age2_id","TotalCount","En
 vif(lm(TotalCount ~ age2_id + age_id + fl_t + date_t + growth_t, data=d))
 vif(lm(EntryDate ~ age2_id + age_id + fl_t + river_t, data=d))
 
-################################################################
 
-
-############## BUILD MODELS ##############
+#____________________________________________________________________
+### Build models
 
 
 ######## Migration duration models
@@ -318,11 +318,8 @@ compare(m1, m1.dgs1)
 plot(coeftab(m1.d, m1.s, m1.g, m1.dg, m1.ds, m1.gs, m1.dgs))
 ## Parameter estimates similar across models
 
-######################################################
-######################################################
 
-
-
+#____________________________________________________________________
 ######## Entry date models
 
 ## Single covariate models
