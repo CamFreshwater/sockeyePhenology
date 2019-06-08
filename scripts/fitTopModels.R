@@ -8,9 +8,10 @@
 ##################################################################
 
 require(rethinking)
+require(dplyr)
 require(here) #package supporting generic import assuming your selected wd contains file of interest
 
-phenDat <- read.csv(here("individualOtolithData.csv"), stringsAsFactors = FALSE, strip.white = TRUE, 
+phenDat <- read.csv(here("data/individualOtolithData.csv"), stringsAsFactors = FALSE, strip.white = TRUE, 
 	na.strings = c("NA",""))
 
 
@@ -34,8 +35,9 @@ phenDat$growth_t <- (phenDat$meanGrowth - mean(phenDat$meanGrowth))/sd(phenDat$m
 phenDat$river_t <- (phenDat$riverDist - mean(phenDat$riverDist))/sd(phenDat$riverDist)
 
 ## Remove extra columns
-d <- phenDat[,c("yr_id","cu_id","age_id","age2_id","TotalCount","EntryDate","fl_t","date_t",
-	"growth_t","river_t")]
+d <- phenDat %>% 
+  select(yr_id, cu_id, age_id, age2_id, incrementCount, oceanEntryDate,
+         fl_t, date_t, growth_t, river_t)
 
 
 
